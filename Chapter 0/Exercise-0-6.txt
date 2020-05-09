@@ -1,0 +1,8 @@
+note over browser:
+User enters note and clicks save button
+Browser uses JS to add new note the the screen
+end note
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over server:
+Server saves note
+end note 
