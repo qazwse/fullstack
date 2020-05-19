@@ -12,7 +12,10 @@ const Button = ({onclick, text}) => (
 )
 
 const Statistic = ({value, text}) => (
-  <p>{text} {value}</p>
+  <tr>
+    <td>{text}</td> 
+    <td>{value}</td>
+  </tr>
 )
 
 const Statistics = ({good,neutral,bad}) => {
@@ -21,14 +24,14 @@ const Statistics = ({good,neutral,bad}) => {
     const total = good+neutral+bad
 
     return(
-      <div>
+      <table>
         <Statistic value={good} text="good" />
         <Statistic value={neutral} text="neutral" />
         <Statistic value={bad} text="bad" />
         <Statistic value={total} text="all" />
         <Statistic value={(good-bad)/total} text="average" />
         <Statistic value={Number((good/total)*100).toFixed(2) + " %"} text="positive" />
-      </div>
+      </table>
     )
   } else {
     return(<p>No feedback given</p>)
