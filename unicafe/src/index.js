@@ -25,12 +25,14 @@ const Statistics = ({good,neutral,bad}) => {
 
     return(
       <table>
+        <tbody>
         <Statistic value={good} text="good" />
         <Statistic value={neutral} text="neutral" />
         <Statistic value={bad} text="bad" />
         <Statistic value={total} text="all" />
         <Statistic value={(good-bad)/total} text="average" />
         <Statistic value={Number((good/total)*100).toFixed(2) + " %"} text="positive" />
+        </tbody>
       </table>
     )
   } else {
