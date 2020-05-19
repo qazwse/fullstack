@@ -1,21 +1,48 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Section = ({title}) => (
+  <h1>
+    {title}
+  </h1>
+)
+
 const Button = ({onclick, text}) => (
   <button onClick={onclick}>{text}</button>
 )
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [mostVotes, setMostVotes] = useState(0)
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
+
+  
 
   const getQuote = () => (
     setSelected(Math.floor(Math.random() * Math.floor(anecdotes.length)))
   )
 
+  const addVote = () => {
+    const copy = {...votes}
+    copy[selected] += 1
+    setVotes(copy)
+    if (votes[selected] >= votes[mostVotes]) {
+      setMostVotes(selected)
+    }
+  }
+
   return (
     <div>
+      <Section title="Current Anecdote" />
       <p>{props.anecdotes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
+      <Button onclick={addVote} text="vote" />
       <Button onclick={getQuote} text="next anecdote" />
+
+      <Section title="most Liked Anecdote" />
+      <p>{props.anecdotes[mostVotes]}</p>
+      <p>has {votes[mostVotes]} votes</p>
+
     </div>
   )
 }
