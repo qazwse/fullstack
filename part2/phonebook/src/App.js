@@ -7,8 +7,7 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345' },
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ]) 
-  const [displayPersons, setDisplayPersons] = useState([...persons])
-  
+
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ nameFilter, setNameFilter ] = useState('')
@@ -28,23 +27,30 @@ const App = () => {
       setPersons(persons.concat(newPerson))
       setNewName('')
       setNewNumber('')
+      setNameFilter('')
     }    
+  }
+
+  const filterSubmit = (event) => {
+    event.preventDefault()
   }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
-    console.log(newName, event.target.value)
   }
 
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
-    console.log(newNumber, event.target.value)
+  }
+
+  const handleFilterChange = (event) => {
+    setNameFilter(event.target.value)  
   }
 
   return (
     <div>
       <h2>Filter</h2>
-      <form>
+      <form onSubmit={filterSubmit}>
         <div>
           search: <input value={nameFilter} onChange={handleFilterChange}/>
         </div>
@@ -63,7 +69,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map((person) => <li key={person.name}>{person.name} - {person.number}</li>)}
+        {persons.filter(person => person.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase())).map((person) => <li key={person.name}>{person.name} - {person.number}</li>)}
       </ul>
     </div>
   )
