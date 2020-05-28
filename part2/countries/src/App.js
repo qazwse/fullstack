@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import Search from './components/Search'
+import ResultList from './components/ResultList'
+import axios from 'axios';
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState('Canada')
+  const [countryData, setCountryData] = useState([])
+
+  useEffect(() => {
+    console.log('Getting country data...')
+    axios
+      .get("https://restcountries.eu/rest/v2/all")
+      .then(response => {
+        console.log("Country data received.")
+        setCountryData(response.data)
+      })
+  }, [])
+
+  const handleSearchTermChange = (event) => {
+    setSearchTerm(event.target.value)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Search searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange}/>
+      <ResultList searchTerm={searchTerm} countryData={countryData} />
     </div>
   );
 }
