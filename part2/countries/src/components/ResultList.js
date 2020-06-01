@@ -1,7 +1,7 @@
 import React from 'react';
 import CountryInfo from './CountryInfo'
 
-const ResultList = ({searchTerm, countryData}) => {
+const ResultList = ({searchTerm, setSearchTerm, countryData}) => {
     const filteredData = countryData.filter(country => country.name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()))
     console.log(filteredData)
 
@@ -20,7 +20,11 @@ const ResultList = ({searchTerm, countryData}) => {
     } else {
         return(
             <ul>
-                {filteredData.map(country => <li key={country.name}>{country.name}</li>)}
+                {filteredData.map(country => 
+                    <li key={country.name}>
+                        {country.name} 
+                        <button onClick={() => setSearchTerm(country.name)}>show</button>
+                    </li>)}
             </ul>
         )
     }

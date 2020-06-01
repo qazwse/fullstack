@@ -9,7 +9,11 @@ const CountryInfo = ({countryData}) => {
             <p>Population: {countryData.population}</p>
             <h3>Languages</h3>
             <ul>
-                {countryData.languages.map(language => <li key={language.iso639_1}>{language.name}</li> )}
+                {countryData.languages.map(language => 
+                    <li key={language.iso639_1}>
+                        {language.name}
+                    </li> 
+                )}
             </ul>
             <img src={countryData.flag} alt={`{countryData.name} flag`} width='50%'/>
         </div>

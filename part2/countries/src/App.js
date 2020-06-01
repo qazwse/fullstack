@@ -4,7 +4,7 @@ import ResultList from './components/ResultList'
 import axios from 'axios';
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState('Canada')
+  const [searchTerm, setSearchTerm] = useState('sw')
   const [countryData, setCountryData] = useState([])
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="App">
       <Search searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange}/>
-      <ResultList searchTerm={searchTerm} countryData={countryData} />
+      <ResultList searchTerm={searchTerm} setSearchTerm={setSearchTerm} countryData={countryData} />
     </div>
   );
 }
