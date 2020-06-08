@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -11,15 +11,13 @@ const App = () => {
   const [ nameFilter, setNameFilter ] = useState('')
 
   useEffect(() => {
-    console.log('Requesting data...')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('Recevied response...', response)
-        setPersons(response.data)
+    console.log('Getting initial server data...')
+    personService
+      .getAll()
+      .then(serverResponse => {
+        setPersons(serverResponse)
       })
   }, [])
-  console.log('render', persons.length, 'persons')
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -33,18 +31,27 @@ const App = () => {
         number: newNumber,
       }
       
-      axios.post('http://localhost:3001/persons', newPerson)
-           .then(response => {
-            setPersons([...persons, response.data])
-           })
-           .catch(error => {
-             console.log('Error communicating with server.')
-           })
-
-      setNewName('')
-      setNewNumber('')
-      setNameFilter('')
+      personService
+        .create(newPerson)
+        .then(serverResponse => {
+          setPersons(persons.concat(serverResponse))
+          setNewName('')
+          setNewNumber('')
+          setNameFilter('')
+        })
     }    
+  }
+
+  const deletePerson = (id) => {
+    console.log(id)
+    const person = persons.find(p => p.id === id)
+    if (window.confirm(`Are you sure you want to delete ${person.name}`)) {
+      personService
+        .deletePerson(id)
+        .then(serverResponse => {
+          setPersons(persons.filter(p => p.id !== id))
+        })
+    }
   }
 
   const handleNameChange = (event) => {
@@ -66,7 +73,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <PersonForm addPerson={addPerson} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={persons} nameFilter={nameFilter} />
+      <Persons persons={persons} nameFilter={nameFilter} deletePerson={deletePerson} />
     </div>
   )
 }
