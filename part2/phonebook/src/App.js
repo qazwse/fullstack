@@ -19,11 +19,22 @@ const App = () => {
       })
   }, [])
 
+  const updatePerson = (person) => {
+    const np = {...person, number:newNumber}
+
+    personService.updatePerson(np).then(returnedPerson => {
+      setPersons(persons.map(p => p.id !== np.id ? p : returnedPerson))
+    })
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
 
-    if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already in the phonebook`)
+    const person = persons.find(person => person.name === newName)
+    if (person) {
+      if (window.confirm(`${person.name} already exists, would you like to update?`)) {
+        updatePerson(person)
+      }      
     } 
     else {
       const newPerson ={
