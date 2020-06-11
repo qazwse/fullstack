@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Notification = ({notificationState}) => {
+    console.log(notificationState)
     const notificationStyle = {
         background: 'lightgrey',
         fontSize: '20px',
@@ -10,6 +11,9 @@ const Notification = ({notificationState}) => {
         marginBottom: '10px'
     }
 
+    if (notificationState === null) {
+        return null
+    }
     if (notificationState.message === null || notificationState.message === undefined) {
         return null
     }

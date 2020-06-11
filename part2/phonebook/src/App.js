@@ -24,13 +24,19 @@ const App = () => {
   const updatePerson = (person) => {
     const np = {...person, number:newNumber}
 
-    personService.updatePerson(np).then(returnedPerson => {
-      setPersons(persons.map(p => p.id !== np.id ? p : returnedPerson))
-      setNotificationState({message:`${newPerson.name} updated in contacts.`, type:"success"})
-      setTimeout(() => {
-        setNotificationState({})
-      }, 5000)
-    })
+    personService.updatePerson(np)
+      .then(returnedPerson => {
+        setPersons(persons.map(p => p.id !== np.id ? p : returnedPerson))
+        setNotificationState({message:`${returnedPerson.name} updated in contacts.`, type:"success"})
+        setTimeout(() => {
+          setNotificationState({})
+        }, 5000)
+      })
+      .catch(error => {
+        setNotificationState({message:`${np.name} was already deleted from the server.`, type:"error"})
+        setTimeout(() => {setNotificationState(null)}, 5000)
+        setPersons(persons.filter(p => p.id !== np.id))
+      })
   }
 
   const addPerson = (event) => {
