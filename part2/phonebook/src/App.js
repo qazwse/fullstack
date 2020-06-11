@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notifaction from './components/Notification'
 import personService from './services/persons'
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ nameFilter, setNameFilter ] = useState('')
+  const [ notificationState, setNotificationState ] = useState({})
 
   useEffect(() => {
     console.log('Getting initial server data...')
@@ -24,6 +26,10 @@ const App = () => {
 
     personService.updatePerson(np).then(returnedPerson => {
       setPersons(persons.map(p => p.id !== np.id ? p : returnedPerson))
+      setNotificationState({message:`${newPerson.name} updated in contacts.`, type:"success"})
+      setTimeout(() => {
+        setNotificationState({})
+      }, 5000)
     })
   }
 
@@ -49,6 +55,10 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           setNameFilter('')
+          setNotificationState({message:`${newPerson.name} added to contacts.`, type:"success"})
+          setTimeout(() => {
+            setNotificationState({})
+          }, 5000)
         })
     }    
   }
@@ -61,6 +71,10 @@ const App = () => {
         .deletePerson(id)
         .then(serverResponse => {
           setPersons(persons.filter(p => p.id !== id))
+          setNotificationState({message:`${person.name} deleted from server.`, type:"success"})
+          setTimeout(() => {
+            setNotificationState({})
+          }, 5000)
         })
     }
   }
@@ -79,6 +93,7 @@ const App = () => {
 
   return (
     <div>
+      <Notifaction notificationState={notificationState} />
       <h2>Filter</h2>
       <Filter nameFilter={nameFilter} handleFilterChange={handleFilterChange} />
       <h2>Phonebook</h2>
