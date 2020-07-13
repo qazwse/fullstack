@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Notification = ({notificationState}) => {
-    console.log(notificationState)
     const notificationStyle = {
         background: 'lightgrey',
         fontSize: '20px',
